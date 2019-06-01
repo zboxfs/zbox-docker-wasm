@@ -1,11 +1,13 @@
-# zbox-docker-nodejs
+# zbox-docker-wasm
 
-Docker image for building Node.js binding of [ZboxFS](https://github.com/zboxfs/zbox).
+Docker image for building WebAssembly binding of [ZboxFS].
 
 ## Update with upstream ZboxFS
 
+After cloning this repo, use below commands to update upstream ZboxFS.
+
 ```sh
-cd zbox-nodejs
+cd zbox-docker-wasm/zbox
 git pull
 ```
 
@@ -15,23 +17,25 @@ Make sure you've already updated to the latest upstream as above. Then use below
 command to build the image.
 
 ```sh
-docker build --rm -t zboxfs/nodejs .
+cd zbox-docker-wasm
+./build.sh
 ```
 
 ## How to use this image
 
-To use this image to build Node.js binding for ZboxFS, first get the latest
-code from https://github.com/zboxfs/zbox-nodejs.
+To use this image to build WebAssembly binding for ZboxFS, first get the latest
+code from https://github.com/zboxfs/zbox-browser
 
 ```sh
-git clone https://github.com/zboxfs/zbox-nodejs.git
+git clone https://github.com/zboxfs/zbox-browser.git
 ```
 
 And then go into the cloned folder and use below command to build the binding.
 
 ```sh
-cd zbox-nodejs
-docker run --rm -v $PWD:/root/zbox zboxfs/nodejs npm run build
+./build.sh
 ```
 
-Now the Node.js binding library `native/index.node` is built.
+For more details, please visit https://github.com/zboxfs/zbox-browser.
+
+[ZboxFS]: https://github.com/zboxfs/zbox
