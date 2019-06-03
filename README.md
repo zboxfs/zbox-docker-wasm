@@ -30,10 +30,10 @@ code from https://github.com/zboxfs/zbox-browser
 git clone https://github.com/zboxfs/zbox-browser.git
 ```
 
-And then go into the cloned folder and use below command to build the binding.
+And then in the cloned folder use below command to build.
 
 ```sh
-./build.sh
+npm run build-wasm
 ```
 
 For more details, please visit https://github.com/zboxfs/zbox-browser.
