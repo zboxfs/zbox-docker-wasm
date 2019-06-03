@@ -7,14 +7,12 @@ services:
 
 before_install:
   - docker -v
-  - docker build --rm -t zboxfs/wasm .
-  - docker images
 
 script:
   # Publish when using '[publish docker]' keywords
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - COMMIT_MESSAGE=$(git log --format=%B --no-merges -n 1 | tr -d '\n')
-  - if [[ ${COMMIT_MESSAGE} =~ "[publish docker]" ]]; then docker push zboxfs/wasm || exit 0; fi;
+  - if [[ ${COMMIT_MESSAGE} =~ "[publish docker]" ]]; then ./build.sh && docker push zboxfs/wasm; fi;
 
 notifications:
   email:
