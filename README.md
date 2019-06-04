@@ -7,8 +7,7 @@ Docker image for building WebAssembly binding of [ZboxFS].
 After cloning this repo, use below commands to update upstream ZboxFS.
 
 ```sh
-cd zbox-docker-wasm/zbox
-git pull
+git submodule update --remote
 ```
 
 ## How to build this image
@@ -17,7 +16,6 @@ Make sure you've already updated to the latest upstream as above. Then use below
 command to build the image.
 
 ```sh
-cd zbox-docker-wasm
 ./build.sh
 ```
 
