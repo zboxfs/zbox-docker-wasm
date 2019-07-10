@@ -46,7 +46,7 @@ ENV LZ4_LIB_DIR=${LIBLZ4_HOME}/lib
 
 # install rust wasm target and wasm related tools
 RUN rustup target add wasm32-unknown-unknown \
-    && cargo install --vers 0.2.45 wasm-bindgen-cli \
+    && cargo install --vers 0.2.47 wasm-bindgen-cli \
     && cargo install wasm-nm
 
 # pre-build dependencies
@@ -56,7 +56,7 @@ COPY ./zbox/Cargo.toml ./
 RUN mkdir src && \
     echo "// dummy file" > src/lib.rs && \
     echo "fn main() {}" > build.rs && \
-    cargo build --target wasm32-unknown-unknown --features storage-zbox-wasm && \
+    cargo build --target wasm32-unknown-unknown && \
     rm -rf /tmp/zbox
 
 # set work dir
