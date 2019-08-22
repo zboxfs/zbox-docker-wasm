@@ -1,6 +1,7 @@
 FROM zboxfs/base
 
 RUN apt-get update -y && apt-get install -y \
+    python \
     git-core
 
 # install emscripten
