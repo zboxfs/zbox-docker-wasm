@@ -28,7 +28,7 @@ ENV SODIUM_LIB_DIR=${LIBSODIUM_HOME}/libsodium-js/lib
 ENV SODIUM_STATIC=true
 
 # define lz4 library environment variables
-ENV LIBLZ4_VERSION 1.9.1
+ENV LIBLZ4_VERSION 1.9.2
 ENV LIBLZ4_FILE lz4-${LIBLZ4_VERSION}.tar.gz
 ENV LIBLZ4_HOME /opt/lz4-${LIBLZ4_VERSION}
 
@@ -45,20 +45,12 @@ RUN bash -c "source /emsdk/emsdk_env.sh && emmake make BUILD_SHARED=no lib-relea
 # environment variables for static linking with liblz4
 ENV LZ4_LIB_DIR=${LIBLZ4_HOME}/lib
 
-# install rust wasm target and wasm related tools
+# use node.js from emsdk
+ENV PATH="/emsdk/node/8.9.1_64bit/bin:${PATH}"
+
+# install wasm building tools
 RUN rustup target add wasm32-unknown-unknown \
-    && cargo install --vers 0.2.47 wasm-bindgen-cli \
-    && cargo install wasm-nm
+    & cargo install wasm-nm \
+    && curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 
-# pre-build dependencies
-RUN mkdir /tmp/zbox
-WORKDIR /tmp/zbox
-COPY ./zbox/Cargo.toml ./
-RUN mkdir src && \
-    echo "// dummy file" > src/lib.rs && \
-    echo "fn main() {}" > build.rs && \
-    cargo build --target wasm32-unknown-unknown && \
-    rm -rf /tmp/zbox
-
-# set work dir
 WORKDIR /root/zbox
