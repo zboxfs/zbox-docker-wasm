@@ -50,7 +50,7 @@ ENV PATH="/emsdk/node/8.9.1_64bit/bin:${PATH}"
 
 # install wasm building tools
 RUN rustup target add wasm32-unknown-unknown \
-    & cargo install wasm-nm \
+    && cargo install wasm-nm \
     && curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 
 WORKDIR /root/zbox
