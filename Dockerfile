@@ -5,10 +5,10 @@ RUN apt-get update -y && apt-get install -y \
     git-core
 
 # install emscripten
-ENV EMCC_SDK_VERSION sdk-1.38.23-64bit
+ENV EMCC_SDK_VERSION sdk-1.39.5-64bit
 WORKDIR /
 RUN git clone https://github.com/emscripten-core/emsdk.git
-RUN cd emsdk && ./emsdk install $EMCC_SDK_VERSION && ./emsdk activate $EMCC_SDK_VERSION
+RUN cd emsdk && ./emsdk install $EMCC_SDK_VERSION
 
 # set environment variable and change llvm root directory to indicate
 # emscripten use our llvm as wasm backend
@@ -21,7 +21,7 @@ COPY libsodium-wasm.patch .
 RUN patch -p1 < libsodium-wasm.patch
 
 # build libsodium using emscripten
-RUN bash -c "source /emsdk/emsdk_env.sh && ./dist-build/emscripten.sh --standard"
+RUN bash -c "/emsdk/emsdk activate $EMCC_SDK_VERSION && source /emsdk/emsdk_env.sh && ./dist-build/emscripten.sh --standard"
 
 # environment variables for static linking with libsodium
 ENV SODIUM_LIB_DIR=${LIBSODIUM_HOME}/libsodium-js/lib
@@ -40,13 +40,13 @@ RUN wget -q https://github.com/lz4/lz4/archive/v${LIBLZ4_VERSION}.tar.gz -O ${LI
 
 # build liblz4 static library using emscripten
 WORKDIR ${LIBLZ4_HOME}
-RUN bash -c "source /emsdk/emsdk_env.sh && emmake make BUILD_SHARED=no lib-release"
+RUN bash -c "/emsdk/emsdk activate $EMCC_SDK_VERSION && source /emsdk/emsdk_env.sh && emmake make BUILD_SHARED=no lib-release"
 
 # environment variables for static linking with liblz4
 ENV LZ4_LIB_DIR=${LIBLZ4_HOME}/lib
 
 # use node.js from emsdk
-ENV PATH="/emsdk/node/8.9.1_64bit/bin:${PATH}"
+ENV PATH="/emsdk/node/12.9.1_64bit/bin:${PATH}"
 
 # install wasm building tools
 RUN rustup target add wasm32-unknown-unknown \
